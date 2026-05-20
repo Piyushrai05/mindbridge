@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Session {
+  id          String         @id @default(uuid())
+  createdAt   DateTime       @default(now()) @map("created_at")
+  language    String         @default("en")
+  checkins    MoodCheckin[]
+  journals    JournalEntry[]
+  crisisAlerts CrisisAlert[]
+
+  @@map("sessions")
+}
+
+model MoodCheckin {
+  id        String   @id @default(uuid())
+  sessionId String   @map("session_id")
+  mood      String
+  intensity Int
+  createdAt DateTime @default(now()) @map("created_at")
+  session   Session  @relation(fields: [sessionId], references: [id])
+
+  @@map("mood_checkins")
+}
+
+model JournalEntry {
+  id              String   @id @default(uuid())
+  sessionId       String   @map("session_id")
+  text            String
+  detectedEmotion String   @map("detected_emotion")
+  riskLevel       String   @map("risk_level")
+  aiResponse      String   @map("ai_response")
+  createdAt       DateTime @default(now()) @map("created_at")
+  session         Session  @relation(fields: [sessionId], references: [id])
+
+  @@map("journal_entries")
+}
+
+model CrisisAlert {
+  id          String   @id @default(uuid())
+  sessionId   String   @map("session_id")
+  triggerText String   @map("trigger_text")
+  riskLevel   String   @map("risk_level")
+  status      String   @default("pending")
+  createdAt   DateTime @default(now()) @map("created_at")
+  session     Session  @relation(fields: [sessionId], references: [id])
+
+  @@map("crisis_alerts")
+}

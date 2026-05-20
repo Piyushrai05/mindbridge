@@ -1,0 +1,16 @@
+{
+  "name": "MindBridge",
+  "short_name": "MindBridge",
+  "description": "Anonymous AI-powered mental wellness support for students",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F9FE",
+  "theme_color": "#6C63FF",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
